@@ -399,8 +399,8 @@ def Source_about_callback(update, context):
     query = update.callback_query
     if query.data == "source_":
         query.message.edit_text(
-            text=""" \nInfo & About \
-                 \nIn here you can find what is Sophia and how to set her up
+            text="""𝗜𝗻𝗳𝗼 & 𝗔𝗯𝗼𝘂𝘁 
+                 
                  \nClick buttons for help""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
