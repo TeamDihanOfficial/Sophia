@@ -385,6 +385,9 @@ GDMORNING_HANDLER = DisableAbleMessageHandler(
 GDNIGHT_HANDLER = DisableAbleMessageHandler(
     Filters.regex(r"(?i)(gn|good night)"), goodnight, friendly="goodnight"
 )
+SOPHIA_HANDLER = DisableAbleMessageHandler(
+    Filters.regex(r"(?i)(sophi|Sophia)"), goodnight, friendly="sophia"
+)
 
 dispatcher.add_handler(WEEBIFY_HANDLER)
 dispatcher.add_handler(SHOUT_HANDLER)
@@ -402,6 +405,7 @@ dispatcher.add_handler(EIGHTBALL_HANDLER)
 dispatcher.add_handler(TABLE_HANDLER)
 dispatcher.add_handler(GDMORNING_HANDLER)
 dispatcher.add_handler(GDNIGHT_HANDLER)
+dispatcher.add_handler(SOPHIA_HANDLER)
 
 __mod_name__ = "💞Memes💞"
 __command_list__ = [
@@ -437,4 +441,5 @@ __handlers__ = [
     EIGHTBALL_HANDLER,
     GDMORNING_HANDLER,
     GDNIGHT_HANDLER,
+    SOPHIA_HANDLER,
 ]
