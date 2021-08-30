@@ -403,6 +403,10 @@ def sophia_about_callback(update, context):
                     InlineKeyboardButton(text="Notes 📑", callback_data="sophia_notes"),
                  ],
                  [
+                    InlineKeyboardButton(text="🎵 Music Player Commands ", url=f"https://telegra.ph/Sophia-Music-Player-08-30"),
+                    InlineKeyboardButton(text=" Commands Help ❓", callback_data="help_back"),
+                 ],
+                 [
                     InlineKeyboardButton(text="💬 Support ", url=f"https://t.me/dihan_official"),
                     InlineKeyboardButton(text="🙋‍♀️ Updates", url=f"https://t.me/dihanofficial"),
                  ],
@@ -457,8 +461,7 @@ def Source_about_callback(update, context):
     if query.data == "source_":
         query.message.edit_text(
             text="""𝗜𝗻𝗳𝗼 & 𝗔𝗯𝗼𝘂𝘁 
-               
-                 Click buttons for help""",
+                  \nClick buttons for help""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
