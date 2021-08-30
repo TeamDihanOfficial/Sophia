@@ -344,7 +344,12 @@ def goodmorning(update, context):
     message.reply_text(reply, parse_mode=ParseMode.MARKDOWN)
     
 
-
+@run_async
+@typing_action
+def sophia(update, context):
+    message = update.effective_message
+    reply = random.choice(fun.SOPHIA)
+    message.reply_text(reply, parse_mode=ParseMode.MARKDOWN)
 
 
 
@@ -386,7 +391,7 @@ GDNIGHT_HANDLER = DisableAbleMessageHandler(
     Filters.regex(r"(?i)(gn|good night)"), goodnight, friendly="goodnight"
 )
 SOPHIA_HANDLER = DisableAbleMessageHandler(
-    Filters.regex(r"(?i)(sophi|Sophia)"), goodnight, friendly="sophia"
+    Filters.regex(r"(?i)(sophi|Sophia)"), sophia, friendly="sophia"
 )
 
 dispatcher.add_handler(WEEBIFY_HANDLER)
