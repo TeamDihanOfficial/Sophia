@@ -77,8 +77,6 @@ def get_readable_time(seconds: int) -> str:
 
 PM_START_TEXT = """Hey there, my name is *Sophia*.\n\nI can help manage your groups with useful features, feel free to add me to your groups!."""
 
-SOPHIABOT_STICKER = "CAACAgUAAxkBAAJR7WEtgpJbn54h-oGRVLLxNqWtC0orAAKgBAACf2CwVBEZExMCgn_9IAQ"
-
 buttons = [
     [
         InlineKeyboardButton(text=" Commands Help ❓", callback_data="help_back"),
@@ -108,7 +106,10 @@ Click buttons to get help
 DONATE_STRING = """Hey, glad to hear you want to donate!
  You can support the project Of [Dihan Randila](t.me/dihanrandila) \
  Supporting isnt always financial! [Dihan Official](t.me/dihanofficial) \
- Those who cannot provide monetary support are welcome to help us develop the bot at ."""
+ Those who cannot provide monetary support are welcome to help us develop the bot at .
+
+SOPHIABOT_STICKER = "CAACAgUAAxkBAAJR7WEtgpJbn54h-oGRVLLxNqWtC0orAAKgBAACf2CwVBEZExMCgn_9IAQ"
+"""
 
 IMPORTED = {}
 MIGRATEABLE = []
