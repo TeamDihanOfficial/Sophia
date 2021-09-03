@@ -240,7 +240,7 @@ def start(update: Update, context: CallbackContext):
                 random.choice(STICKERS),
                 timeout=60,
             )
-        update.effective_message.reply_text("Hey there! My name is *Sophia*. \nJoin My Updates @DihanOfficial")
+         update.effective_message.reply_text("Hey there! My name is Sophia. Join My Updates @DihanOfficial")
 
 def error_handler(update, context):
     """Log the error and send a telegram message to notify the developer."""
