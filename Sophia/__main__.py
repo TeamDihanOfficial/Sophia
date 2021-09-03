@@ -224,7 +224,7 @@ def start(update: Update, context: CallbackContext):
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
 
-        else: 
+       else:
             update.effective_message.reply_sticker(
                 random.choice(STICKERS),
                 timeout=60,
@@ -233,17 +233,15 @@ def start(update: Update, context: CallbackContext):
                 PM_START_TEXT,
                 reply_markup=InlineKeyboardMarkup(buttons),
                 parse_mode=ParseMode.MARKDOWN,
-                timeout=60,
             )
-   
-       else:
-        update.effective_message.reply_photo(
-            SOPHIA_IMG, caption= "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
+    else:
+        update.effective_message.reply_text(
+            "𝑰'𝒎 𝒂𝒘𝒂𝒌𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚!😊\n<b>𝑯𝒂𝒗𝒆𝒏'𝒕 𝒔𝒍𝒆𝒑𝒕 𝒔𝒊𝒏𝒄𝒆:</b> <code>{}</code>😝".format(
                 uptime
             ),
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="Support Chat, url="t.me/dihan_Official")]]
+                [[InlineKeyboardButton(text="Help ", callback_data="help_back")]],
             ),
         )
 def error_handler(update, context):
