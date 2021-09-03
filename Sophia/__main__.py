@@ -236,13 +236,12 @@ def start(update: Update, context: CallbackContext):
                 timeout=60,
             )
     else:
+          update.effective_message.reply_sticker(
+                random.choice(STICKERS),
+                timeout=60,
+            )
         update.effective_message.reply_text(
-            "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
-                uptime
-            ),
-            parse_mode=ParseMode.HTML,
-        )
-
+            "Hey there! My name is *Sophia*. \nJoin My Updates @DihanOfficial)
 
 def error_handler(update, context):
     """Log the error and send a telegram message to notify the developer."""
