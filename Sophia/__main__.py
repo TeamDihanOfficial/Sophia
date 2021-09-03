@@ -1,36 +1,22 @@
+import html
 import importlib
-import time
+import json
 import re
+import random
+import time
+import traceback
 from sys import argv
 from typing import Optional
-from pyrogram import filters, idle
 
-from Sophia import (
-    ALLOW_EXCL,
-    CERT_PATH,
-    DONATION_LINK,
-    LOGGER,
-    OWNER_ID,
-    PORT,
-    SUPPORT_CHAT,
-    TOKEN,
-    URL,
-    WEBHOOK,
-    SUPPORT_CHAT,
-    dispatcher,
-    StartTime,
-    telethn,
-    pbot,
-    updater,
+from telegram import (
+    Chat,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+    ParseMode,
+    Update,
+    User,
 )
-
-# needed to dynamically load modules
-# NOTE: Module order is not guaranteed, specify that in the config file!
-from Sophia.modules import ALL_MODULES
-from Sophia.modules.helper_funcs.chat_status import is_user_admin
-from Sophia.modules.helper_funcs.misc import paginate_modules
-from Sophia.modules.sudoers import bot_sys_stats
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.error import (
     BadRequest,
     ChatMigrated,
@@ -49,36 +35,62 @@ from telegram.ext import (
 from telegram.ext.dispatcher import DispatcherHandlerStop, run_async
 from telegram.utils.helpers import escape_markdown
 
+from Sophia import (
+    ALLOW_EXCL,
+    BL_CHATS,
+    CERT_PATH,
+    DONATION_LINK,
+    LOGGER,
+    OWNER_ID,
+    PORT,
+    SUPPORT_CHAT,
+    TOKEN,
+    URL,
+    WEBHOOK,
+    WHITELIST_CHATS,
+    StartTime,
+    dispatcher,
+    pbot,
+    telethn,
+    updater,
+)
 
-def get_readable_time(seconds: int) -> str:
-    count = 0
-    ping_time = ""
-    time_list = []
-    time_suffix_list = ["s", "m", "h", "days"]
+from Sophia.modules import ALL_MODULES
+from Sophia.modules.helper_funcs.alternate import typing_action
+from Sophia.modules.helper_funcs.chat_status import is_user_admin
+from Sophia.modules.helper_funcs.misc import paginate_modules
+from Sophia.modules.helper_funcs.readable_time import get_readable_time
 
-    while count < 4:
-        count += 1
-        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
-        if seconds == 0 and remainder == 0:
-            break
-        time_list.append(int(result))
-        seconds = int(remainder)
+PM_START_TEXT = """
+Hey there, my name is *Sophia*.\n\nI can help manage your groups with useful features, feel free to add me to your groups!
+"""
 
-    for x in range(len(time_list)):
-        time_list[x] = str(time_list[x]) + time_suffix_list[x]
-    if len(time_list) == 4:
-        ping_time += time_list.pop() + ", "
-
-    time_list.reverse()
-    ping_time += ":".join(time_list)
-
-    return ping_time
+HELP_STRINGS = f"""
+✘✘✘ 𝗛𝗲𝗹𝗽𝗳𝘂𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 ✘✘✘
+Every possibility of Sophia is documentated here
+Click buttons to get help
+""".format(
+    dispatcher.bot.first_name,
+    "" if not ALLOW_EXCL else "\nAll commands can either be used with / or !.\n",
+)
 
 
+DONATE_STRING = """
+Hey, glad to hear you want to donate!
+ You can support the project Of [Dihan Randila](t.me/dihanrandila) \
+ Supporting isnt always financial! [Dihan Official](t.me/dihanofficial) \
+ Those who cannot provide monetary support are welcome to help us develop the bot at 
+"""
+STICKERS = (
+      "CAACAgUAAx0CTpRfGwACF41hMfagTfWdHNFici1VtOCQVVNYmgACgh8AAsZRxhU6tKJa_ySnnCAE",
+      "CAACAgUAAx0CTpRfGwACF1hhMffRnQphX63cPzglpQABvJJPGqAAApIeAALGUcYVjI5YO0gKtN8gBA",
+      "CAACAgUAAx0CTpRfGwACF5phMfi5vgKwQFg6KuzHiEc79QFT0QACCR4AAsZRxhVu32VqEb3_1SAE",
+      "CAACAgUAAx0CTpRfGwACF5ZhMfiU5ww16ngVE8dxVotg3S61YAACCBwAAsZRxhXNskm3MleaviAE",
+      "CAACAgUAAx0CTpRfGwACF6FhMfkeB_Gjn2XP6GqWZEG5N4LYOgAC7B8AAsZRxhXYObEz_yZmSiAE",
+)    
 
-PM_START_TEXT = """Hey there, my name is *Sophia*.\n\nI can help manage your groups with useful features, feel free to add me to your groups!."""
 
-buttons = [
+BUTTONS = [
     [
         InlineKeyboardButton(text=" Commands Help ❓", callback_data="help_back"),
     ],
@@ -97,34 +109,26 @@ buttons = [
     ],
 ]
 
-HELP_STRINGS = """
-✘✘✘ 𝗛𝗲𝗹𝗽𝗳𝘂𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 ✘✘✘
-
-Every possibility of Sophia is documentated here
-Click buttons to get help
-"""
-
-DONATE_STRING = """Hey, glad to hear you want to donate!
- You can support the project Of [Dihan Randila](t.me/dihanrandila) \
- Supporting isnt always financial! [Dihan Official](t.me/dihanofficial) \
- Those who cannot provide monetary support are welcome to help us develop the bot at ."""
-
 IMPORTED = {}
 MIGRATEABLE = []
 HELPABLE = {}
 STATS = []
 USER_INFO = []
+USER_BOOK = []
 DATA_IMPORT = []
 DATA_EXPORT = []
+
 CHAT_SETTINGS = {}
 USER_SETTINGS = {}
+
+GDPR = []
 
 for module_name in ALL_MODULES:
     imported_module = importlib.import_module("Sophia.modules." + module_name)
     if not hasattr(imported_module, "__mod_name__"):
         imported_module.__mod_name__ = imported_module.__name__
 
-    if imported_module.__mod_name__.lower() not in IMPORTED:
+    if not imported_module.__mod_name__.lower() in IMPORTED:
         IMPORTED[imported_module.__mod_name__.lower()] = imported_module
     else:
         raise Exception("Can't have two modules with the same name! Please change one")
@@ -139,8 +143,14 @@ for module_name in ALL_MODULES:
     if hasattr(imported_module, "__stats__"):
         STATS.append(imported_module)
 
+    if hasattr(imported_module, "__gdpr__"):
+        GDPR.append(imported_module)
+
     if hasattr(imported_module, "__user_info__"):
         USER_INFO.append(imported_module)
+
+    if hasattr(imported_module, "__user_book__"):
+        USER_BOOK.append(imported_module)
 
     if hasattr(imported_module, "__import_data__"):
         DATA_IMPORT.append(imported_module)
@@ -160,21 +170,21 @@ def send_help(chat_id, text, keyboard=None):
     if not keyboard:
         keyboard = InlineKeyboardMarkup(paginate_modules(0, HELPABLE, "help"))
     dispatcher.bot.send_message(
-        chat_id=chat_id,
-        text=text,
-        parse_mode=ParseMode.MARKDOWN,
-        disable_web_page_preview=True,
-        reply_markup=keyboard,
+        chat_id=chat_id, text=text, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard
     )
 
 
 @run_async
-def test(update: Update, context: CallbackContext):
-    # pprint(eval(str(update)))
-    # update.effective_message.reply_text("Hola tester! _I_ *have* `markdown`", parse_mode=ParseMode.MARKDOWN)
+def test(update, context):
+    try:
+        print(update)
+    except:
+        pass
+    update.effective_message.reply_text(
+        "Hola tester! _I_ *have* `markdown`", parse_mode=ParseMode.MARKDOWN
+    )
     update.effective_message.reply_text("This person edited a message")
     print(update.effective_message)
-
 
 @run_async
 def start(update: Update, context: CallbackContext):
@@ -192,7 +202,7 @@ def start(update: Update, context: CallbackContext):
                     update.effective_chat.id,
                     HELPABLE[mod].__help__,
                     InlineKeyboardMarkup(
-                        [[InlineKeyboardButton(text="⬅️ BACK", callback_data="help_back")]]
+                        [[InlineKeyboardButton(text="Back", callback_data="help_back")]]
                     ),
                 )
 
@@ -209,19 +219,49 @@ def start(update: Update, context: CallbackContext):
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
         else:
+            update.effective_message.reply_sticker(
+                random.choice(STICKERS),
+                timeout=60,
+            )
             update.effective_message.reply_text(
                 PM_START_TEXT,
-                reply_markup=InlineKeyboardMarkup(buttons),
+                reply_markup=InlineKeyboardMarkup(BUTTONS),
                 parse_mode=ParseMode.MARKDOWN,
-                timeout=60,
             )
     else:
         update.effective_message.reply_text(
-            "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
+            "𝑰'𝒎 𝒂𝒘𝒂𝒌𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚!😊\n<b>𝑯𝒂𝒗𝒆𝒏'𝒕 𝒔𝒍𝒆𝒑𝒕 𝒔𝒊𝒏𝒄𝒆:</b> <code>{}</code>😝".format(
                 uptime
             ),
             parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="Help ", callback_data="help_back")]],
+            ),
         )
+     
+def error_handler(update, context):
+    """Log the error and send a telegram message to notify the developer."""
+    LOGGER.error(msg="Exception while handling an update:", exc_info=context.error)
+
+    tb_list = traceback.format_exception(
+        None, context.error, context.error.__traceback__
+    )
+    tb = "".join(tb_list)
+
+    message = (
+        "An exception was raised while handling an update\n"
+        "<pre>update = {}</pre>\n\n"
+        "<pre>{}</pre>"
+        
+    ).format(
+        html.escape(json.dumps(update.to_dict(), indent=2, ensure_ascii=False)),
+        html.escape(tb),
+    )
+
+    if len(message) >= 4096:
+        message = message[:4096]
+    context.bot.send_message(chat_id=OWNER_ID, text=message, parse_mode=ParseMode.HTML)
+
 
 
 def error_handler(update, context):
