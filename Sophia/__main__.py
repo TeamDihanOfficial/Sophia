@@ -76,8 +76,6 @@ def get_readable_time(seconds: int) -> str:
 
 
 
-
-
 PM_START_TEXT = """Hey there, my name is *Sophia*.\n\nI can help manage your groups with useful features, feel free to add me to your groups!."""
 
 buttons = [
@@ -109,9 +107,7 @@ Click buttons to get help
 DONATE_STRING = """Hey, glad to hear you want to donate!
  You can support the project Of [Dihan Randila](t.me/dihanrandila) \
  Supporting isnt always financial! [Dihan Official](t.me/dihanofficial) \
- Those who cannot provide monetary support are welcome to help us develop the bot at .
-
-"""
+ Those who cannot provide monetary support are welcome to help us develop the bot at ."""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -212,23 +208,22 @@ def start(update: Update, context: CallbackContext):
             elif args[0][1:].isdigit() and "rules" in IMPORTED:
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
-
-       else:  
+        else:
             update.effective_message.reply_text(
                 PM_START_TEXT,
                 reply_markup=InlineKeyboardMarkup(buttons),
                 parse_mode=ParseMode.MARKDOWN,
+                timeout=60,
             )
     else:
         update.effective_message.reply_text(
-            "𝑰'𝒎 𝒂𝒘𝒂𝒌𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚!😊\n<b>𝑯𝒂𝒗𝒆𝒏'𝒕 𝒔𝒍𝒆𝒑𝒕 𝒔𝒊𝒏𝒄𝒆:</b> <code>{}</code>😝".format(
+            "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
                 uptime
             ),
             parse_mode=ParseMode.HTML,
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="Help ", callback_data="help_back")]],
-            ),
         )
+
+
 def error_handler(update, context):
     """Log the error and send a telegram message to notify the developer."""
     # Log the error before we do anything else, so we can see it even if something breaks.
