@@ -236,8 +236,9 @@ def start(update: Update, context: CallbackContext):
                 timeout=60,
             )
    
- else:
-         update.effective_message.reply_text("Hey there! My name is Sophia. Join My Updates @DihanOfficial")
+       else:
+         update.effective_message.reply_text(
+                   "Hey there! My name is Sophia. Join My Updates @DihanOfficial")
 
 def error_handler(update, context):
     """Log the error and send a telegram message to notify the developer."""
