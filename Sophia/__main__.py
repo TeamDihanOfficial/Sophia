@@ -75,6 +75,20 @@ def get_readable_time(seconds: int) -> str:
     return ping_time
 
 
+
+STICKERS = (
+      "CAACAgUAAxkBAAJWg2EyA0QH8bkuDA9CLu76fsUt49kvAALFAgACJLqZVu8aC6J0swzFIAQ",
+      "CAACAgUAAx0CTpRfGwACF41hMfagTfWdHNFici1VtOCQVVNYmgACgh8AAsZRxhU6tKJa_ySnnCAE",
+      "CAACAgUAAx0CTpRfGwACF5ZhMfiU5ww16ngVE8dxVotg3S61YAACCBwAAsZRxhXNskm3MleaviAE",
+      "CAACAgUAAx0CTpRfGwACF1hhMffRnQphX63cPzglpQABvJJPGqAAApIeAALGUcYVjI5YO0gKtN8gBA",
+      "CAACAgUAAx0CTpRfGwACF5phMfi5vgKwQFg6KuzHiEc79QFT0QACCR4AAsZRxhVu32VqEb3_1SAE",
+      "CAACAgIAAx0CTpRfGwACF6dhMf4xhY8tF02RzRrAZ0PVhX2RswACUwEAAhAabSLrCVU1z_fmSSAE",
+      "CAADBAADYA4AAu2_kFH5DUGKzf5usAI",
+      "CAACAgUAAx0CTpRfGwACF6FhMfkeB_Gjn2XP6GqWZEG5N4LYOgAC7B8AAsZRxhXYObEz_yZmSiAE",
+)    
+
+
+
 PM_START_TEXT = """Hey there, my name is *Sophia*.\n\nI can help manage your groups with useful features, feel free to add me to your groups!."""
 
 buttons = [
@@ -108,7 +122,6 @@ DONATE_STRING = """Hey, glad to hear you want to donate!
  Supporting isnt always financial! [Dihan Official](t.me/dihanofficial) \
  Those who cannot provide monetary support are welcome to help us develop the bot at .
 
-SOPHIABOT_STICKER = "CAACAgUAAxkBAAJR7WEtgpJbn54h-oGRVLLxNqWtC0orAAKgBAACf2CwVBEZExMCgn_9IAQ"
 """
 
 IMPORTED = {}
@@ -210,7 +223,12 @@ def start(update: Update, context: CallbackContext):
             elif args[0][1:].isdigit() and "rules" in IMPORTED:
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
-        else:
+
+        else: 
+            update.effective_message.reply_sticker(
+                random.choice(STICKERS),
+                timeout=60,
+            )
             update.effective_message.reply_text(
                 PM_START_TEXT,
                 reply_markup=InlineKeyboardMarkup(buttons),
@@ -361,10 +379,10 @@ def sophia_about_callback(update, context):
             f"\n• I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.\n"
             f"\n• I have a note keeping system, blacklists, and even predetermined replies on certain keywords.\n"
             f"\n• I check for admins' permissions before executing any command\n"
-            f"\n\n[♚ Special Credits] (https://telegra.ph/Special-Credits-08-21)\n"
-            f"\n[💾 Source Code] (https://github.com/dihanofficial/sophia)\n"
-            f"\n[📄 Terms And Conditions] (https://telegra.ph/Terms-and-Conditions-08-21)\n"
-            f"\n[♕ Dihan Official] (https://github.com/dihanofficial)\n"
+            f"\n\n♚ [Special Credits] (https://telegra.ph/Special-Credits-08-21)\n"
+            f"\n💾 [Source Code] (https://github.com/dihanofficial/sophia)\n"
+            f"\n📄 [Terms And Conditions] (https://telegra.ph/Terms-and-Conditions-08-21)\n"
+            f"\n♕ [Dihan Official] (https://github.com/dihanofficial)\n"
             f"\n\nLicensed under the GNU Affero General Public Lisence v3.0.\n"
              f"\n© 2020 - 2021 @DihanOfficial. All Rights Reserved\n"
             f"",
