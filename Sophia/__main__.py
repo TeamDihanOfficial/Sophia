@@ -74,7 +74,7 @@ def get_readable_time(seconds: int) -> str:
 
     return ping_time
 
-
+SOPHIA_IMG = "https://telegra.ph/file/8b6f8f2bb4ff3912634c7.jpg"
 
 STICKERS = (
       "CAACAgUAAxkBAAJWg2EyA0QH8bkuDA9CLu76fsUt49kvAALFAgACJLqZVu8aC6J0swzFIAQ",
@@ -237,9 +237,15 @@ def start(update: Update, context: CallbackContext):
             )
    
        else:
-         update.effective_message.reply_text(
-                   "Hey there! My name is Sophia. Join My Updates @DihanOfficial")
-
+        update.effective_message.reply_photo(
+            SOPHIA_IMG, caption= "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
+                uptime
+            ),
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="Support Chat, url="t.me/dihan_Official")]]
+            ),
+        )
 def error_handler(update, context):
     """Log the error and send a telegram message to notify the developer."""
     # Log the error before we do anything else, so we can see it even if something breaks.
