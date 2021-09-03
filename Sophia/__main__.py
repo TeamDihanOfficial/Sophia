@@ -1,22 +1,36 @@
-import html
 import importlib
-import json
-import re
-import random
 import time
-import traceback
+import re
 from sys import argv
 from typing import Optional
+from pyrogram import filters, idle
 
-from telegram import (
-    Chat,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    Message,
-    ParseMode,
-    Update,
-    User,
+from Sophia import (
+    ALLOW_EXCL,
+    CERT_PATH,
+    DONATION_LINK,
+    LOGGER,
+    OWNER_ID,
+    PORT,
+    SUPPORT_CHAT,
+    TOKEN,
+    URL,
+    WEBHOOK,
+    SUPPORT_CHAT,
+    dispatcher,
+    StartTime,
+    telethn,
+    pbot,
+    updater,
 )
+
+# needed to dynamically load modules
+# NOTE: Module order is not guaranteed, specify that in the config file!
+from Sophia.modules import ALL_MODULES
+from Sophia.modules.helper_funcs.chat_status import is_user_admin
+from Sophia.modules.helper_funcs.misc import paginate_modules
+from Sophia.modules.sudoers import bot_sys_stats
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.error import (
     BadRequest,
     ChatMigrated,
@@ -34,32 +48,6 @@ from telegram.ext import (
 )
 from telegram.ext.dispatcher import DispatcherHandlerStop, run_async
 from telegram.utils.helpers import escape_markdown
-
-from Sophia import (
-    ALLOW_EXCL,
-    BL_CHATS,
-    CERT_PATH,
-    DONATION_LINK,
-    LOGGER,
-    OWNER_ID,
-    PORT,
-    SUPPORT_CHAT,
-    TOKEN,
-    URL,
-    WEBHOOK,
-    SUPPORT_CHAT,
-    StartTime,
-    dispatcher,
-    pbot,
-    telethn,
-    updater,
-)
-
-from Sophia.modules import ALL_MODULES
-from Sophia.modules.helper_funcs.alternate import typing_action
-from Sophia.modules.helper_funcs.chat_status import is_user_admin
-from Sophia.modules.helper_funcs.misc import paginate_modules
-from Sophia.modules.helper_funcs.readable_time import get_readable_time
 
 PM_START_TEXT = """
 Hey there, my name is *Sophia*.\n\nI can help manage your groups with useful features, feel free to add me to your groups!
