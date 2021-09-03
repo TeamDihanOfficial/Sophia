@@ -235,11 +235,8 @@ def start(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.MARKDOWN,
                 timeout=60,
             )
-    else:
-          update.effective_message.reply_sticker(
-                random.choice(STICKERS),
-                timeout=60,
-            )
+   
+ else:
          update.effective_message.reply_text("Hey there! My name is Sophia. Join My Updates @DihanOfficial")
 
 def error_handler(update, context):
