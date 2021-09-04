@@ -104,13 +104,8 @@ Every possibility of Sophia is documentated here
 Click buttons to get help
 """
 
-STICKERS = (
-      "CAACAgUAAx0CTpRfGwACF41hMfagTfWdHNFici1VtOCQVVNYmgACgh8AAsZRxhU6tKJa_ySnnCAE",
-      "CAACAgUAAx0CTpRfGwACF1hhMffRnQphX63cPzglpQABvJJPGqAAApIeAALGUcYVjI5YO0gKtN8gBA",
-      "CAACAgUAAx0CTpRfGwACF5phMfi5vgKwQFg6KuzHiEc79QFT0QACCR4AAsZRxhVu32VqEb3_1SAE",
-      "CAACAgUAAx0CTpRfGwACF5ZhMfiU5ww16ngVE8dxVotg3S61YAACCBwAAsZRxhXNskm3MleaviAE",
-      "CAACAgIAAx0CTpRfGwACF6dhMf4xhY8tF02RzRrAZ0PVhX2RswACUwEAAhAabSLrCVU1z_fmSSAE",
-)    
+STICKERS = ("CAACAgUAAx0CTpRfGwACF41hMfagTfWdHNFici1VtOCQVVNYmgACgh8AAsZRxhU6tKJa_ySnnCAE",)
+      
 
 
 DONATE_STRING = """Hey, glad to hear you want to donate!
@@ -219,11 +214,8 @@ def start(update: Update, context: CallbackContext):
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
         else:
-            update.effective_message.reply_sticker(
-                  (STICKERS),
-                  timeout=60,
-           )
             update.effective_message.reply_text(
+                STICKERS,
                 PM_START_TEXT,
                 reply_markup=InlineKeyboardMarkup(buttons),
                 parse_mode=ParseMode.MARKDOWN,
