@@ -220,7 +220,7 @@ def start(update: Update, context: CallbackContext):
 
         else:
             update.effective_message.reply_sticker(
-                random.choice(STICKERS),
+                  STICKERS,
                 timeout=60,
            )
             update.effective_message.reply_text(
