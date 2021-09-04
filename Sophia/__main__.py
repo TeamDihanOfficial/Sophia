@@ -220,8 +220,8 @@ def start(update: Update, context: CallbackContext):
 
         else:
             update.effective_message.reply_sticker(
-                  STICKERS,
-                timeout=60,
+                  (STICKERS),
+                  timeout=60,
            )
             update.effective_message.reply_text(
                 PM_START_TEXT,
