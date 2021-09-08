@@ -75,8 +75,6 @@ def get_readable_time(seconds: int) -> str:
     return ping_time
 
 
-
-
 PM_START_TEXT = """Hey there, my name is *Sophia*.\n\nI can help manage your groups with useful features, feel free to add me to your groups!."""
 
 buttons = [
@@ -100,13 +98,10 @@ buttons = [
 
 HELP_STRINGS = """
 ✘✘✘ 𝗛𝗲𝗹𝗽𝗳𝘂𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 ✘✘✘
+
 Every possibility of Sophia is documentated here
 Click buttons to get help
 """
-
-STICKERS = ("CAACAgUAAx0CTpRfGwACF41hMfagTfWdHNFici1VtOCQVVNYmgACgh8AAsZRxhU6tKJa_ySnnCAE",)
-      
-
 
 DONATE_STRING = """Hey, glad to hear you want to donate!
  You can support the project Of [Dihan Randila](t.me/dihanrandila) \
@@ -159,7 +154,6 @@ for module_name in ALL_MODULES:
         USER_SETTINGS[imported_module.__mod_name__.lower()] = imported_module
 
 
-
 # do not async
 def send_help(chat_id, text, keyboard=None):
     if not keyboard:
@@ -176,7 +170,7 @@ def send_help(chat_id, text, keyboard=None):
 @run_async
 def test(update: Update, context: CallbackContext):
     # pprint(eval(str(update)))
-    # update.effective_message.reply_text("Hola tester! _I_ *have* markdown", parse_mode=ParseMode.MARKDOWN)
+    # update.effective_message.reply_text("Hola tester! _I_ *have* `markdown`", parse_mode=ParseMode.MARKDOWN)
     update.effective_message.reply_text("This person edited a message")
     print(update.effective_message)
 
@@ -195,7 +189,7 @@ def start(update: Update, context: CallbackContext):
                     return
                 send_help(
                     update.effective_chat.id,
-                    HELPABLE[mod].help,
+                    HELPABLE[mod].__help__,
                     InlineKeyboardMarkup(
                         [[InlineKeyboardButton(text="⬅️ BACK", callback_data="help_back")]]
                     ),
@@ -227,6 +221,7 @@ def start(update: Update, context: CallbackContext):
             ),
             parse_mode=ParseMode.HTML,
         )
+
 
 def error_handler(update, context):
     """Log the error and send a telegram message to notify the developer."""
@@ -356,20 +351,24 @@ def sophia_about_callback(update, context):
     query = update.callback_query
     if query.data == "sophia_":
         query.message.edit_text(
-            text=f"🙋‍♀️ I'm *Sophia*, a powerful group management bot built to help you manage your group easily."
-            f"\n\n• I can restrict users.\n"
-            f"\n• I can greet users with customizable welcome messages and even set a group's rules.\n"
-            f"\n• I have an advanced anti-flood system.\n"
-            f"\n• I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.\n"
-            f"\n• I have a note keeping system, blacklists, and even predetermined replies on certain keywords.\n"
-            f"\n• I check for admins' permissions before executing any command\n"
-            f"\n\n♚ [Special Credits] (https://telegra.ph/Special-Credits-08-21)\n"
-            f"\n💾 [Source Code] (https://github.com/dihanofficial/sophia)\n"
-            f"\n📄 [Terms And Conditions] (https://telegra.ph/Terms-and-Conditions-08-21)\n"
-            f"\n♕ [Dihan Official] (https://github.com/dihanofficial)\n"
-            f"\n\nLicensed under the GNU Affero General Public Lisence v3.0.\n"
-             f"\n© 2020 - 2021 @DihanOfficial. All Rights Reserved\n"
-            f"",
+            text="""  🙋‍♀️ I'm *Sophia*, a powerful group management bot built to help you manage your group easily.
+                 \n* I can restrict users.
+                 \n* I can greet users with customizable welcome messages and even set a group's rules.
+                 \n* I have an advanced anti-flood system.
+                 \n* I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.
+                 \n* I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
+                 \n* I check for admins' permissions before executing any command
+
+                 \n[♚ Special Credits] (https://telegra.ph/Special-Credits-08-21)
+
+                \n[💾 Source Code]  (https://github.com/dihanofficial/sophia)
+
+                \n[♕ Dihan Official] (https://github.com/dihanofficial) 
+
+                \n[📄 Terms And Conditions] (https://telegra.ph/Terms-and-Conditions-08-21)
+
+                \nLicensed under the GNU Affero General Public Lisence v3.0. 
+                \n© 2020 - 2021 @DihanOfficial. All Rights Reserved """,
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
@@ -389,71 +388,6 @@ def sophia_about_callback(update, context):
                 disable_web_page_preview=False,
         )
 
-
-
-    elif query.data == "sophia_basichelp":
-        query.message.edit_text(
-            text=f"*Here's basic Help regarding* *How to use Me?*"
-            f"\n\n• Firstly Add {dispatcher.bot.first_name} to your group by pressing [here](http://t.me/{dispatcher.bot.username}?startgroup=true)\n"
-            f"\n• After adding promote me manually with full rights for faster experience.\n"
-            f"\n• Than send `/admincache@SophiaSLBot` in that chat to refresh admin list in My database.\n"
-            f"\n\n*All done now use below given button's to know about use!*\n"
-            f"",
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                 [
-                    InlineKeyboardButton(text="Admin 🤴", callback_data="sophia_admin"),
-                    InlineKeyboardButton(text="Notes 📑", callback_data="sophia_notes"),
-                 ],
-                 [
-                    InlineKeyboardButton(text="🎵 Music Player Commands ", url=f"https://telegra.ph/Sophia-Music-Player-08-30"),
-                    InlineKeyboardButton(text=" Commands Help ❓", callback_data="help_back"),
-                 ],
-                 [
-                    InlineKeyboardButton(text="💬 Support ", url=f"https://t.me/dihan_official"),
-                    InlineKeyboardButton(text="🙋‍♀️ Updates", url=f"https://t.me/dihanofficial"),
-                 ],
-                 [
-                    InlineKeyboardButton(text="Back", callback_data="source_"),
-                 
-                 ]
-                ]
-            ),
-        )
-    elif query.data == "sophia_admin":
-        query.message.edit_text(
-            text=f"*Let's make your group bit effective now*"
-            f"\nCongragulations, Sophia now ready to manage your group."
-            f"\n\n*Admin Tools*"
-            f"\nBasic Admin tools help you to protect and powerup your group."
-            f"\nYou can ban members, Kick members, Promote someone as admin through commands of bot."
-            f"\n\n*Welcome*"
-            f"\nLets set a welcome message to welcome new users coming to your group."
-            f"send `/setwelcome [message]` to set a welcome message!",
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="Back", callback_data="sophia_basichelp")]]
-            ),
-        )
-
-    elif query.data == "sophia_notes":
-        query.message.edit_text(
-            text=f"<b> Setting up notes</b>"
-            f"\nYou can save message/media/audio or anything as notes"
-            f"\nto get a note simply use # at the beginning of a word"
-            f"\n\nYou can also set buttons for notes and filters (refer help menu)",
-            parse_mode=ParseMode.HTML,
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="Back", callback_data="sophia_basichelp")]]
-            ),
-        )
-
-
-
-
 @pbot.on_callback_query(filters.regex("stats_callback"))
 async def stats_callbacc(_, CallbackQuery):
     text = await bot_sys_stats()
@@ -465,22 +399,29 @@ def Source_about_callback(update, context):
     query = update.callback_query
     if query.data == "source_":
         query.message.edit_text(
-            text="""𝗜𝗻𝗳𝗼 & 𝗔𝗯𝗼𝘂𝘁 
-                  \nClick buttons for help""",
+            text=""" \nInfo & About \
+                 \nIn here you can find what is Sophia and how to set her up
+                 \nClick buttons for help""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
-                 [
-                    InlineKeyboardButton(text="About Me 🙋", callback_data="sophia_"),
-                    InlineKeyboardButton(text="Basic Help 👮‍♀️", callback_data="sophia_basichelp"),
+                  [
+                    InlineKeyboardButton(text=" About Me 🙋‍", callback_data="sophia_"),
+                  ],
+                  [
+                    InlineKeyboardButton(text=" Source Code 💾", url=f"https://github.com/dihanofficial/sophia"),
                   ],
                   [
                     InlineKeyboardButton(text=" Special Credits ❤ ", url=f"https://telegra.ph/Special-Credits-08-21"),
                     InlineKeyboardButton(text="Terms And Conditions 📄 ", url=f"https://telegra.ph/Terms-and-Conditions-08-21"),
                   ],
-                 [
-                    InlineKeyboardButton(text="Source Code 💾", url=f"https://github.com/dihanofficial/sophia"),
+                  [
+                    InlineKeyboardButton(text="🙋‍ Sophia News ", url=f"https://t.me/dihanofficial"),
+                    InlineKeyboardButton(text="💬 Support Group", url=f"https://t.me/dihan_official"),
+                  ],
+                  [
+                    InlineKeyboardButton(text="Commands Help ❓", callback_data="help_back"),
                  ],
                  [
                     InlineKeyboardButton(text="Go Back", callback_data="source_back")
@@ -529,16 +470,10 @@ def get_help(update: Update, context: CallbackContext):
                 [
                     [
                         InlineKeyboardButton(
-                            text="Click me for Help ❓",
+                            text="Click me for help!",
                             url="t.me/{}?start=help".format(context.bot.username),
                         )
-                    ],
-                    [
-                        InlineKeyboardButton(
-                            text="Support Chat 📢 ",
-                            url="https://t.me/{}".format(SUPPORT_CHAT),
-                        )
-                    ],
+                    ]
                 ]
             ),
         )
