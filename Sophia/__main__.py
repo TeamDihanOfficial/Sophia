@@ -75,33 +75,40 @@ def get_readable_time(seconds: int) -> str:
     return ping_time
 
 
-PM_START_TEXT = """Hey there, my name is *Sophia*.\n\nI can help manage your groups with useful features, feel free to add me to your groups!."""
+PM_START_TEXT = f"""
+𝐇𝐞𝐥𝐥𝐨, \n 𝗜'𝗺 𝗦𝗼𝗽𝗵𝗶𝗮 
+𝗜'𝗺 𝗛𝗲𝗿𝗲 𝘁𝗼 𝗵𝗲𝗹𝗽 𝘆𝗼𝘂𝗿 𝗚𝗿𝗼𝘂𝗽𝘀! 𝗛𝗶𝘁 /help [️️ ️](https://telegra.ph/file/583b241199a6c0c0fa38c.jpg)
+Project By @DihanOfficial ❤
+"""
 
 buttons = [
     [
-        InlineKeyboardButton(text=" Commands Help ❓", callback_data="help_back"),
+        InlineKeyboardButton(
+            text="➕ Add Sophia to your Group ➕", url="t.me/Sophia?startgroup=true"),
     ],
     [
-        InlineKeyboardButton(text="Info & About 🙋‍", callback_data="source_"),
+        InlineKeyboardButton(text="Source Code 🗒️", callback_data="source_"),
         InlineKeyboardButton(
-                  text="System Stats 💻", callback_data="stats_callback"
+            text="System Stats 💻", callback_data="stats_callback"
         ),
     ],
     [
-        InlineKeyboardButton(text=" Sophia News 🙋‍♀️ ", url=f"https://t.me/dihanofficial"),
-        InlineKeyboardButton(text=" Support Group 💬 ", url=f"https://t.me/dihan_official"),
+        InlineKeyboardButton(text="🙋‍♀️ Sophia News", url=f"https://t.me/dihanofficial"),
+        InlineKeyboardButton(
+            text="💬 Support Group", url=f"https://t.me/dihan_official"
+        ),
     ],
     [
-        InlineKeyboardButton(text="➕ Add Sophia to your Group ➕", url="t.me/SophiaSLBot?startgroup=true"),   
+        InlineKeyboardButton(text="❓ Commands Help ", callback_data="help_back"),
     ],
 ]
 
-HELP_STRINGS = """
-✘✘✘ 𝗛𝗲𝗹𝗽𝗳𝘂𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 ✘✘✘
 
-Every possibility of Sophia is documentated here
-Click buttons to get help
-"""
+HELP_STRINGS = """
+`Hi.. I'm` 𝗦𝗼𝗽𝗵𝗶𝗮 
+Click On The Buttons Below To Get Documentation About Specific Modules..
+Powered by @dihanofficial 💓 [️️ ️](https://telegra.ph/file/583b241199a6c0c0fa38c.jpg) """
+
 
 DONATE_STRING = """Hey, glad to hear you want to donate!
  You can support the project Of [Dihan Randila](t.me/dihanrandila) \
@@ -351,24 +358,17 @@ def sophia_about_callback(update, context):
     query = update.callback_query
     if query.data == "sophia_":
         query.message.edit_text(
-            text="""  🙋‍♀️ I'm *Sophia*, a powerful group management bot built to help you manage your group easily.
+            text=""" ℹ️ I'm *Sophia*, a powerful group management bot built to help you manage your group easily.
                  \n* I can restrict users.
                  \n* I can greet users with customizable welcome messages and even set a group's rules.
                  \n* I have an advanced anti-flood system.
                  \n* I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.
                  \n* I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
                  \n* I check for admins' permissions before executing any command
-
-                 \n[♚ Special Credits] (https://telegra.ph/Special-Credits-08-21)
-
-                \n[💾 Source Code]  (https://github.com/dihanofficial/sophia)
-
-                \n[♕ Dihan Official] (https://github.com/dihanofficial) 
-
-                \n[📄 Terms And Conditions] (https://telegra.ph/Terms-and-Conditions-08-21)
-
-                \nLicensed under the GNU Affero General Public Lisence v3.0. 
-                \n© 2020 - 2021 @DihanOfficial. All Rights Reserved """,
+                 \n* Awesome Secret @DihanOfficial
+                 \n* Support Group @dihan_official
+                 \* Assistant @SophiaX_Support
+                 \n\nIf you have any question about Sophia, let us know at .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
@@ -399,37 +399,18 @@ def Source_about_callback(update, context):
     query = update.callback_query
     if query.data == "source_":
         query.message.edit_text(
-            text=""" \nInfo & About \
-                 \nIn here you can find what is Sophia and how to set her up
-                 \nClick buttons for help""",
+            text=""" Hi..😍 I'm *Sophia*
+                 \nHere is the [Source Code](https://github.com/dihanofficial/Sophia) .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
-                  [
-                    InlineKeyboardButton(text=" About Me 🙋‍", callback_data="sophia_"),
-                  ],
-                  [
-                    InlineKeyboardButton(text=" Source Code 💾", url=f"https://github.com/dihanofficial/sophia"),
-                  ],
-                  [
-                    InlineKeyboardButton(text=" Special Credits ❤ ", url=f"https://telegra.ph/Special-Credits-08-21"),
-                    InlineKeyboardButton(text="Terms And Conditions 📄 ", url=f"https://telegra.ph/Terms-and-Conditions-08-21"),
-                  ],
-                  [
-                    InlineKeyboardButton(text="🙋‍ Sophia News ", url=f"https://t.me/dihanofficial"),
-                    InlineKeyboardButton(text="💬 Support Group", url=f"https://t.me/dihan_official"),
-                  ],
-                  [
-                    InlineKeyboardButton(text="Commands Help ❓", callback_data="help_back"),
-                 ],
                  [
                     InlineKeyboardButton(text="Go Back", callback_data="source_back")
                  ]
                 ]
             ),
         )
-
     elif query.data == "source_back":
         query.message.edit_text(
                 PM_START_TEXT,
@@ -470,7 +451,7 @@ def get_help(update: Update, context: CallbackContext):
                 [
                     [
                         InlineKeyboardButton(
-                            text="Click me for help!",
+                            text="Help",
                             url="t.me/{}?start=help".format(context.bot.username),
                         )
                     ]
@@ -714,7 +695,7 @@ def main():
 
     if SUPPORT_CHAT is not None and isinstance(SUPPORT_CHAT, str):
         try:
-            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "I'm Online Now!💫 ")
+            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "I'm Online Now! My Updates @dihanofficial")
         except Unauthorized:
             LOGGER.warning(
                 "Bot isnt able to send message to @dihan_official, go and check!"
